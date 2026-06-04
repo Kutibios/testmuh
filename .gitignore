@@ -1,0 +1,25 @@
+# Maven
+tests/target/
+*.iml
+
+# Python
+service/__pycache__/
+service/app/__pycache__/
+*.pyc
+.venv/
+venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node (Marp eger lokalde kuruldu ise)
+node_modules/
+
+# Logs
+*.log

@@ -1,0 +1,67 @@
+name: API Regresyon Testleri
+
+# Pipeline su olaylarda otomatik calisir:
+# - main branch'ine push edildiginde
+# - main'e Pull Request acildiginda
+# Boylece "test gecmeden merge yok" gating kurulmus olur (DevOps shift-left).
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  api-regression-tests:
+    name: FastAPI servis + Rest Assured testleri
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1) Repo'yu CI runner'a indir
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2) FastAPI servisini Docker container'inda ayaga kaldir
+      - name: Servisi ayaga kaldir (docker compose)
+        run: docker compose up -d --build
+
+      # 3) Servisin gercekten hazir olmasini bekle (healthcheck)
+      - name: Servis hazir mi (healthcheck)
+        run: |
+          for i in $(seq 1 30); do
+            if curl -fs http://localhost:8002/health > /dev/null; then
+              echo "Servis hazir, devam ediliyor."
+              exit 0
+            fi
+            echo "Servis hazirlaniyor... ($i/30)"
+            sleep 2
+          done
+          echo "HATA: Servis 60 saniyede hazir olmadi"
+          docker compose logs
+          exit 1
+
+      # 4) Java 17 kurulumu (Maven Surefire'in beklentisi)
+      - name: Java 17 kurulumu
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'maven'
+
+      # 5) Regresyon testlerini calistir (9 test)
+      - name: Rest Assured testlerini calistir
+        working-directory: tests
+        run: mvn -B test
+
+      # 6) Test raporlarini artifact olarak yukle (basarisiz olsa da kaydedilir)
+      - name: Surefire raporlarini yukle
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-reports
+          path: tests/target/surefire-reports/
+          retention-days: 7
+
+      # 7) Servisi temiz kapat
+      - name: Servisi durdur
+        if: always()
+        run: docker compose down

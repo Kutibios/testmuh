@@ -21,7 +21,7 @@ style: |
 **Levent Kutay Sezer**
 Yazılım Test Mühendisliği — Proje Ödevi
 
-GitHub: `github.com/<kullanici>/testmuh` *(repo URL'i en sona da koyacağım)*
+GitHub: `github.com/Kutibios/testmuh`
 
 ---
 
@@ -300,6 +300,6 @@ cd tests && mvn test
 ## Teşekkürler
 
 **GitHub Repo:**
-`github.com/<kullanici>/testmuh`
+`github.com/Kutibios/testmuh`
 
 Sorular?

@@ -1,9 +1,6 @@
 name: API Regresyon Testleri
 
-# Pipeline su olaylarda otomatik calisir:
-# - main branch'ine push edildiginde
-# - main'e Pull Request acildiginda
-# Boylece "test gecmeden merge yok" gating kurulmus olur (DevOps shift-left).
+
 on:
   push:
     branches: [ main ]
@@ -16,15 +13,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1) Repo'yu CI runner'a indir
+      # CI RUNNER İNDİRME
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2) FastAPI servisini Docker container'inda ayaga kaldir
+      # FASTAPI'ı docker ile upladım
       - name: Servisi ayaga kaldir (docker compose)
         run: docker compose up -d --build
 
-      # 3) Servisin gercekten hazir olmasini bekle (healthcheck)
+      # healthcheck
       - name: Servis hazir mi (healthcheck)
         run: |
           for i in $(seq 1 30); do
@@ -47,12 +44,12 @@ jobs:
           java-version: '17'
           cache: 'maven'
 
-      # 5) Regresyon testlerini calistir (9 test)
+      # 5) Regresyon testlerini çalıştırıyorum
       - name: Rest Assured testlerini calistir
         working-directory: tests
         run: mvn -B test
 
-      # 6) Test raporlarini artifact olarak yukle (basarisiz olsa da kaydedilir)
+      # 6) Test raporlarini indiriyorummmmmm
       - name: Surefire raporlarini yukle
         if: always()
         uses: actions/upload-artifact@v4

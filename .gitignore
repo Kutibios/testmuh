@@ -23,3 +23,6 @@ node_modules/
 
 # Logs
 *.log
+
+# Local dokümantasyon (repo'ya gitmesin)
+docs/

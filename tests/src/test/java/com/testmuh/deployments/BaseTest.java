@@ -10,13 +10,7 @@ import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import org.junit.jupiter.api.BeforeAll;
 
-/**
- * Tum test siniflarinin paylasacagi Rest Assured konfigurasyonu.
- *
- * - baseURI: -Dapi.baseUri=... ile override edilebilir (CI'da farkli ortam).
- * - Request/response loglari konsola basilir: sunumda gorunurluk icin onemli.
- * - requestSpec/responseSpec: tekrar eden header ve genel beklentileri tek yerde toplar.
- */
+
 public abstract class BaseTest {
 
     protected static RequestSpecification requestSpec;

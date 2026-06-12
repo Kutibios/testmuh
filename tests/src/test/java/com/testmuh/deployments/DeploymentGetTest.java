@@ -8,11 +8,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.lessThan;
 
-/**
- * GET endpoint regresyon testleri:
- * - Listenin dogru sekilde dondugu (pozitif senaryo)
- * - Var olmayan kayit icin 404 cevabi (negatif senaryo)
- */
+
 public class DeploymentGetTest extends BaseTest {
 
     @Test

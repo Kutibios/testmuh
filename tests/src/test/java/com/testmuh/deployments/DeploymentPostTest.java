@@ -11,12 +11,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.Matchers.notNullValue;
 
-/**
- * POST endpoint regresyon testleri.
- * - Yeni kayit eklenebilmeli (request body ile)
- * - Eklenen kayit GET ile dogrulanabilmeli (end-to-end regresyon zinciri)
- * - Eksik alan gonderilince FastAPI 422 dondurmeli (negatif senaryo)
- */
+
 public class DeploymentPostTest extends BaseTest {
 
     private static final File YENI_DEPLOYMENT_BODY =
@@ -45,7 +40,7 @@ public class DeploymentPostTest extends BaseTest {
     @Test
     @DisplayName("POST sonrasi GET /deployments/{id} -> ayni kaydi dondurmeli (e2e)")
     public void eklenen_deployment_get_ile_dogrulanabilmeli() {
-        // 1) Once POST ile yeni kayit olustur, donen id'yi yakala
+        // kayıt oluştururum
         Response postResponse = given()
                 .spec(requestSpec)
                 .body(YENI_DEPLOYMENT_BODY)
@@ -58,7 +53,7 @@ public class DeploymentPostTest extends BaseTest {
 
         String yeniId = postResponse.jsonPath().getString("id");
 
-        // 2) Ayni id ile GET yapip kaydin gercekten saklandigini dogrula
+        // kaydedildiğini doğrularım
         given()
                 .spec(requestSpec)
         .when()
